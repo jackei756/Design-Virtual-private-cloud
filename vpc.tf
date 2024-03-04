@@ -181,3 +181,8 @@ resource "aws_network_acl_association" "db-sub-nacl-ass" {
   network_acl_id = aws_network_acl.db-nacl.id
   subnet_id      = aws_subnet.db-subnet.id
 }
+resource "aws_security_group" "db-sg" {
+  name        = "db-sg"
+  description = "Allow ssh inbound traffic and all outbound traffic"
+  vpc_id      = aws_vpc.mynthra.id
+}
