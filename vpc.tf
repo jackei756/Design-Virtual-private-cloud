@@ -40,7 +40,7 @@ resource "aws_route_table_association" "web-subnet-ass" {
   route_table_id = aws_route_table.web-subnet-rt.id
 }
 #aws-nacl-connection
-resource "aws_network_acl" "web-nacl" {
+resource "aws_network_nacl" "web-nacl" {
   vpc_id = aws_vpc.mynthra.id
 
   egress {
@@ -66,15 +66,15 @@ resource "aws_network_acl" "web-nacl" {
   }
 }
 #aws-nacl-association
-resource "aws_network_acl_association" "web-sub-nacl-ass" {
-  network_acl_id = aws_network_acl.web-subnet-ass.id
+resource "aws_network_nacl_association" "web-sub-nacl-ass" {
+  network_acl_id = aws_network_nacl.web-subnet-ass.id
   subnet_id      = aws_subnet.web-subnet.id
 }
 #web-subnet sewcurity group
 # web sebnet be
 resource "aws_subnet" "web-subnet-be" {
   vpc_id     = aws_vpc.mynthra.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = "10.0.2.0/24"
 
   tags = {
     Name = "web sebnet be"
@@ -92,11 +92,11 @@ resource "aws_route_table" "web-subnet-be-rt" {
 }
 #web subnet rout association be
 resource "aws_route_table_association" "web-subnet-ass-be" {
-  subnet_id      = aws_subnet.eb-subnet-be.id
+  subnet_id      = aws_subnet.web-subnet-be.id
   route_table_id = aws_route_table.web-subnet-be-rt.id
 }
 # web nacl connetions be
-resource "aws_network_acl" "web-nacl-be" {
+resource "aws_network_nacl" "web-nacl-be" {
   vpc_id = aws_vpc.mynthra.id
 
   egress {
@@ -123,17 +123,17 @@ resource "aws_network_acl" "web-nacl-be" {
 }
 #aws-nacl-association-be
 resource "aws_network_acl_association" "web-sub-nacl-ass-be" {
-  network_acl_id = aws_network_acl.web-nacl-be.id
-  subnet_id      = aws_subnet.web-subnet.id
+  network_acl_id = aws_network_nacl.web-nacl-be.id
+  subnet_id      = aws_subnet.web-subnet-be.id
 }
 
 # db sebnet
 resource "aws_subnet" "db-subnet" {
   vpc_id     = aws_vpc.mynthra.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = "10.0.3.0/24"
 
   tags = {
-    Name = "db-be-sebnet"
+    Name = "db-sebnet"
   }
 }
 #db route table
@@ -146,10 +146,12 @@ resource "aws_route_table" "db-subnet-rt" {
     Name = "db-route"
   }
 }
-resource "aws_network_acl_association" "web-sub-nacl-ass-be" {
-  network_acl_id = aws_network_acl.web-nacl-be.id
-  subnet_id      = aws_subnet.web-subnet.id
+#dbsubnet rout association 
+resource "aws_route_table_association" "db-subnet-route table-ass" {
+  subnet_id      = aws_subnet.db-subnet.id
+  route_table_id = aws_route_table.db-subnet-rt.id
 }
+
 #db nacl connection
 resource "aws_network_acl" "db-nacl" {
   vpc_id = aws_vpc.mynthra.id
