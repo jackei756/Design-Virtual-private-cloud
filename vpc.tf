@@ -71,41 +71,6 @@ resource "aws_network_acl_association" "web-sub-nacl-ass" {
   subnet_id      = aws_subnet.web-subnet.id
 }
 #web-subnet sewcurity group
-resource "aws_security_group" "web-security-group" {
-  name        = "web-sub-sg"
-  description = "Allow ssh inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.mynthra.id
-
-  tags = {
-    Name = "web-sg"
-  }
-  ingress{
-    description      = "ssh from www"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/16"]
-  
-  }
-  ingress{
-    description      = "http from www"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/16"]
-  
-  }
-  egress{
-    from_port        = 0
-    to_port          = 
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  
-  }
-  tags = {
-    Name = "sg-web"
-  }
-}
 # web sebnet be
 resource "aws_subnet" "web-subnet-be" {
   vpc_id     = aws_vpc.mynthra.id
@@ -161,42 +126,6 @@ resource "aws_network_acl_association" "web-sub-nacl-ass-be" {
   network_acl_id = aws_network_acl.web-nacl-be.id
   subnet_id      = aws_subnet.web-subnet.id
 }
-#web-subnet sewcurity group
-resource "aws_security_group" "web-security-group" {
-  name        = "web-sub-sg"
-  description = "Allow ssh inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.mynthra.id
-
-  tags = {
-    Name = "web-sg"
-  }
-  ingress{
-    description      = "ssh from www"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/16"]
-  
-  }
-  ingress{
-    description      = "http from www"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/16"]
-  
-  }
-  egress{
-    from_port        = 0
-    to_port          = 
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  
-  }
-  tags = {
-    Name = "sg-web"
-  }
-}
 
 # db sebnet
 resource "aws_subnet" "db-subnet" {
@@ -251,37 +180,4 @@ resource "aws_network_acl" "db-nacl" {
 resource "aws_network_acl_association" "db-sub-nacl-ass" {
   network_acl_id = aws_network_acl.db-nacl.id
   subnet_id      = aws_subnet.db-subnet.id
-}#web-subnet sewcurity group
-resource "aws_security_group" "web-security-group" {
-  name        = "web-sub-sg"
-  description = "Allow ssh inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.mynthra.id
-
-  tags = {
-    Name = "web-sg"
-  }
-  ingress{
-    description      = "ssh from www"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["10.0.0.0/16"]
-  ingress{
-    description      = "postgress from www"
-    from_port        = 5432
-    to_port          = 5432
-    protocol         = "tcp"
-    cidr_blocks      = ["10.0.0.0/16"]
-  
-  }
-  egress{
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  
-  }
-  tags = {
-    Name = "sg-db"
-  }
 }
